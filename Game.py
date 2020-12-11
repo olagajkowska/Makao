@@ -1,7 +1,6 @@
 from Hand import Hand
 from Deck import Deck
 from Stack import Stack
-from Card import Card
 
 debug = True
 
@@ -40,4 +39,4 @@ class Game:
     def __draw(self, i):
         card = self.__deck.get_top
         self.__deck.remove(card.id)
-        self.__player[i].add(card)
+        self.__player[i].add(card.suit, card)
