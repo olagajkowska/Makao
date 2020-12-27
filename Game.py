@@ -35,7 +35,7 @@ class Game:
         k=0
         while not any(len(hand.content) == 0 for hand in self.__player):
             k+=1
-            print("Round: " + k)
+            print("Round: " + str(k))
             self.__round()
             if self.__empty_deck:
                 break
