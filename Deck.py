@@ -6,9 +6,9 @@ debug = True
 
 
 class Deck(Base_container):
-    def __init__(self, values, colors, N_Decks):
+    def __init__(self, N_Decks):
         super().__init__()
-        self.__initiate(values, colors, N_Decks)
+        self.__initiate(N_Decks)
         self.shuffle()
 
         # if debug:
@@ -27,11 +27,11 @@ class Deck(Base_container):
     def get_top(self):
         return self._Base_container__content[self.length - 1]
 
-    def __initiate(self, values, colors, N_Decks):
+    def __initiate(self, N_Decks):
         i = 0
         for N in range(N_Decks):
-            for col in colors:
-                for val in values:
+            for col in Card.suit_list:
+                for val in Card.rank:
                     c = Card(val, col)
                     self._Base_container__content.append(c)
                     self._Base_container__content[i].set_id(i)
