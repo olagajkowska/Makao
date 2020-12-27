@@ -1,10 +1,30 @@
 debug = True
 
+
 class Card:
-    __slots__ = ['__value', '__suit', '__id']
+
+    rank = {'2': 2,
+            '3': 3,
+            '4': 4,
+            '5': 5,
+            '6': 6,
+            '7': 7,
+            '8': 8,
+            '9': 9,
+            '10': 10,
+            'J': 11,
+            'Q': 12,
+            'K': 13,
+            'A': 14
+            }
+
+    suit_list = ['♣', '♦', '♥', '♠']
+
+    __slots__ = ['__value', '__suit', '__id', '__value_rank']
 
     def __init__(self, value, suit):
         self.__value = value
+        self.__value_rank = self.rank[value]
         self.__suit = suit
         self.__id = -1
 
@@ -27,5 +47,10 @@ class Card:
         return self.__value
 
     @property
+    def value_rank(self):
+        return self.__value_rank
+
+    @property
     def suit(self):
         return self.__suit
+
