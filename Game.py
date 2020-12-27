@@ -32,13 +32,16 @@ class Game:
                 print("Player " + str(i + 1))
                 print(self.__player[i])
 
+        k=0
         while not any(len(hand.content) == 0 for hand in self.__player):
+            k+=1
+            print("Round: " + k)
             self.__round()
             if self.__empty_deck:
                 break
             for j in range(N_Players):
                 print("Player " + str(j + 1))
-                print(self.__player[i])
+                print(self.__player[j])
             print('updated stack:\n', self.__stack, '\n')
 
         print("End of the game")

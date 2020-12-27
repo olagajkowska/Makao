@@ -12,6 +12,7 @@ class Rulebook:
                     ok_cards.append(my_card)
                     break
                 elif rule.isThere == "J" or rule.isThere == "A":
+                    rule.isThere = None
                     break
 
         return ok_cards
