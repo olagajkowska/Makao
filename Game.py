@@ -38,7 +38,8 @@ class Game:
             print("Round: " + str(k))
             self.__round()
             if self.__empty_deck:
-                break
+                print("dealing aditional deck of cards!")
+                self.__deck = Deck(N_Decks)
             for j in range(N_Players):
                 print("Player " + str(j + 1))
                 print(self.__player[j])
@@ -65,12 +66,28 @@ class Game:
             ok_cards = self.__rulebook.check(hand.content, self.__stack.content[-1], [])
             if len(ok_cards) == 0:
                 if len(self.__deck.content) == 0:
-                    self.__empty_deck = True
+
                     print("Deck is empty!")
-                    return
+                    self.__restock()
+                    if len(self.__deck.content) == 0:
+                        self.__empty_deck = True
+                    hand.draw(self.__deck)
+                    continue
                 else:
                     print('card: -\n')
                     hand.draw(self.__deck)
                     continue
 
             hand.play_card(ok_cards, self.__stack)
+
+    def __restock(self):
+                self.__deck.content = self.__stack.content
+                self.__stack.content = []
+                card = self.__deck.get_top
+                self.__deck.remove(card.id)
+                self.__stack.add(card)
+                self.__deck.shuffle()
+
+                if debug:
+                    print(self.__deck)
+                    print(self.__stack)

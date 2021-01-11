@@ -23,3 +23,6 @@ class Base_container:
     @property
     def content(self):
         return self.__content
+
+    @content.setter
+    def content(self, cards): self.__content = cards
