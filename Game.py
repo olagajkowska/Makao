@@ -2,6 +2,7 @@ from Hand import Hand
 from Deck import Deck
 from Stack import Stack
 from Rulebook import Rulebook
+from Effect import Effect
 
 debug = True
 
