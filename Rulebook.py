@@ -67,7 +67,7 @@ class Queen(Rules):
         super().__init__()
 
     def __call__(self, top_card, my_card, effect):
-        if top_card.value == "Q" or my_card.value == "Q":
+        if (top_card.value == "Q" or my_card.value == "Q") and len(effect) == 0:
             return True
         return False
 
@@ -78,10 +78,9 @@ class Ace(Rules):
     def __call__(self, top_card, my_card, effect):
         if top_card.value == "A":
             self.isThere = "A"
-            if len(effect) > 0:
-                if my_card.suit == effect[len(effect) - 1]:
-                    return True
-            if my_card.value == "A":
+            if my_card.suit == effect[len(effect) - 1]:
+                return True
+            elif my_card.value == "A":
                 return True
         return False
 
@@ -92,9 +91,13 @@ class Jack(Rules):
     def __call__(self, top_card, my_card, effect):
         if top_card.value == "J":
             self.isThere = "J"
-            if len(effect) > 0:
+            if my_card.value == effect[len(effect) - 1]:
+                return True
+            elif my_card.value == "J":
+                return True
+        elif len(effect) > 0:
+            if isinstance(effect[len(effect) - 1], str):
+                self.isThere = "J"
                 if my_card.value == effect[len(effect) - 1]:
                     return True
-            if my_card.value == "J":
-                return True
         return False
