@@ -38,11 +38,12 @@ class Game:
         while not any(len(hand.content) == 0 for hand in self.__player):
             k+=1
             print("* * * * * Round: " + str(k) + " * * * * *\n")
+            print('Stack:\n', self.__stack, '\n')   
             self.__round(draw)
             if self.__empty_deck:
                 print("dealing aditional deck of cards!")
                 self.__deck = Deck(N_Decks)
-            print('updated stack:\n', self.__stack, '\n')
+
 
         print("End of the game")
 
@@ -61,7 +62,10 @@ class Game:
             player.sort_hand()
 
     def __round(self, draw):
+        win=0
         for count, hand in enumerate(self.__player):
+            if win == 1:
+                continue
             print("* * * Player " + str(count + 1)+" * * *")
             print(self.__player[count])
             ok_cards = self.__rulebook.check(hand.content, self.__stack.content[-1], [])
@@ -86,7 +90,14 @@ class Game:
                     draw=0
                     continue
 
-            hand.play_card(ok_cards, self.__stack)
+            to_play=hand.strategy(ok_cards)
+            hand.play_card(to_play, self.__stack)
+            if len(hand.content)==0:
+                win=1
+            else:
+                hand.renumber(hand.content)
+
+
 
     def __restock(self):
                 self.__deck.content = self.__stack.content

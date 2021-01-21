@@ -21,19 +21,23 @@ class Hand(Base_container):
             card.set_id(new_id)
             new_id += 1
 
-    def play_card(self, ok_cards, stack):
-        self.remove(ok_cards[0].id)  # tutaj strategia powinna wybrać odpowiednią kartę z ok_cards
-        stack.add(ok_cards[0])
-        new_id = 0
-        for card in self.content:
+    def play_card(self, ok_card, stack):
+        self.remove(ok_card.id)  # tutaj strategia powinna wybrać odpowiednią kartę z ok_cards
+        stack.add(ok_card)
+        print('card: ', ok_card, '\n')
+
+    def renumber(self,cards):
+        for new_id, card in enumerate(self.content):
             card.set_id(new_id)
             new_id += 1
-        print('card: ', ok_cards[0], '\n')
 
     def draw(self, deck):
         card = deck.get_top
         deck.remove(card.id)
         self.add(card)
+
+    def strategy(self, cards):
+        return cards[0]
 
 
 

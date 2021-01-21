@@ -9,6 +9,16 @@ class Stack(Base_container):
 
         pass
 
+    def __str__(self):
+        if len(self._Base_container__content)>5:
+            print("...")
+            for item in self._Base_container__content[-5:]:
+                print(item)
+        else:
+            for item in self._Base_container__content:
+                print(item)
+        return "\n"
+
     def check_top(self):
         invalid = ['2', '3', '4', 'J', 'Q', 'A']
         for value in invalid:
