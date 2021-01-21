@@ -1,6 +1,5 @@
 debug = True
 
-
 class Card:
 
     rank = {'2': 2,
@@ -15,7 +14,7 @@ class Card:
             'J': 11,
             'Q': 12,
             'K': 13,
-            'A': 14
+            'A': 14,
             }
 
     suit_list = ['♣', '♦', '♥', '♠']

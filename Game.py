@@ -3,12 +3,13 @@ from Deck import Deck
 from Stack import Stack
 from Rulebook import Rulebook
 from Effect import Effect
+from Card import Card
 
 debug = True
 
 
 class Game:
-    __slots__ = ['__deck', '__stack', '__player', '__rulebook', '__empty_deck']
+    __slots__ = ['__deck', '__stack', '__player', '__rulebook', '__empty_deck', '__active']
 
     def __init__(self, N_Players=4, N_Decks=1):
         self.__deck = Deck(N_Decks)
@@ -16,6 +17,7 @@ class Game:
         self.__player = []
         self.__rulebook = Rulebook()
         self.__empty_deck = False
+        self.__active = Card('8', '-')
 
         for i in range(N_Players):
             hand = Hand()
@@ -57,6 +59,7 @@ class Game:
             self.__deck.remove(card.id)
             self.__stack.add(card)
             self.__stack.check_top()
+            self.__activate(self.__stack.content[-1])
 
         for player in self.__player:
             player.sort_hand()
@@ -68,7 +71,7 @@ class Game:
                 continue
             print("* * * Player " + str(count + 1)+" * * *")
             print(self.__player[count])
-            ok_cards = self.__rulebook.check(hand.content, self.__stack.content[-1], [])
+            ok_cards = self.__rulebook.check(hand.content, self.__active, [])
             if len(ok_cards) == 0:
                 if len(self.__deck.content) == 0:
 
@@ -92,11 +95,11 @@ class Game:
 
             to_play=hand.strategy(ok_cards)
             hand.play_card(to_play, self.__stack)
+            self.__activate(self.__stack.content[-1])            
             if len(hand.content)==0:
                 win=1
             else:
                 hand.renumber(hand.content)
-
 
 
     def __restock(self):
@@ -110,3 +113,6 @@ class Game:
                 if debug:
                     print(self.__deck)
                     print(self.__stack)
+
+    def __activate(self, card):
+        self.__active = Card(card.value, card.suit)
