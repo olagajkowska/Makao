@@ -3,10 +3,24 @@ class Rulebook:
     def __init__(self):
         self.__rules = [Queen(), Ace(), Jack(), sameSuit(), sameValue()]
 
-    def check(self, player_cards, top_card, effect):
+    def check(self, player_cards, top_card, effect, draw):
         ok_cards = []
+        temp_cards = []
 
-        for my_card in player_cards:
+
+        if draw != 0:
+            for my_card in player_cards:
+                if my_card.value in ['2', '3']:
+                    temp_cards.append(my_card)
+                elif my_card.value == 'K':
+                    if my_card.suit in ["♥", "♠"]:
+                        temp_cards.append(my_card)
+        else:
+            temp_cards = player_cards
+
+
+
+        for my_card in temp_cards:
             for rule in self.__rules:
                 if rule(top_card, my_card, effect):
                     ok_cards.append(my_card)

@@ -37,17 +37,19 @@ class Game:
 
         k=0
         draw=0
+        wait=0
         while not any(len(hand.content) == 0 for hand in self.__player):
             k+=1
             print("* * * * * Round: " + str(k) + " * * * * *\n")
             print('Stack:\n', self.__stack, '\n')   
-            self.__round(draw)
+            winner, wait = self.__round(draw, wait)
             if self.__empty_deck:
                 print("dealing aditional deck of cards!")
                 self.__deck = Deck(N_Decks)
 
 
         print("End of the game")
+        print("Player " + str((winner-1)%4+1) + " wins!\n")
 
     def __start(self):
         for i in range(5):
@@ -64,14 +66,18 @@ class Game:
         for player in self.__player:
             player.sort_hand()
 
-    def __round(self, draw):
+    def __round(self, draw, wait):
         win=0
         for count, hand in enumerate(self.__player):
             if win == 1:
-                continue
+                return count, wait
             print("* * * Player " + str(count + 1)+" * * *")
+            if wait == 1:
+                wait = 0
+                print("Turn skipped!\n")
+                continue
             print(self.__player[count])
-            ok_cards = self.__rulebook.check(hand.content, self.__active, [])
+            ok_cards = self.__rulebook.check(hand.content, self.__active, [], draw)
             if len(ok_cards) == 0:
                 if len(self.__deck.content) == 0:
 
@@ -93,13 +99,15 @@ class Game:
                     draw=0
                     continue
 
-            to_play=hand.strategy(ok_cards)
+            to_play, special = hand.strategy(ok_cards)
+            draw, wait = Effect.efekt(special, draw, wait)
             hand.play_card(to_play, self.__stack)
-            self.__activate(self.__stack.content[-1])            
+            self.__activate(to_play)            
             if len(hand.content)==0:
                 win=1
             else:
                 hand.renumber(hand.content)
+        return count, wait
 
 
     def __restock(self):

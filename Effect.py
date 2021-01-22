@@ -26,6 +26,22 @@ class Effect:
         else:
             pass
 
+    @staticmethod
+    def efekt(special, draw, wait):
+        if special == 2:
+            draw = draw + 2
+        elif special == 3:
+            draw = draw + 3
+        elif special == 4:
+            wait = 1
+        elif special in range(5,10):
+            pass
+        elif special == 'K':
+            draw = draw + 5
+        elif special in ['♣', '♦', '♥', '♠']:
+            pass
+        return draw, wait
+
 
 
 

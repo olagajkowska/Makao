@@ -37,7 +37,25 @@ class Hand(Base_container):
         self.add(card)
 
     def strategy(self, cards):
-        return cards[0]
+        karta = cards[0]
+
+        special=0
+        if karta.value == '2':
+            special=2
+        elif karta.value == '3':
+            special=3
+        elif karta.value == '4':
+            special=4
+        elif karta.value == 'J':
+            special=8
+        elif karta.value == 'K':
+            if cards[0].suit in ["♥", "♠"]:
+                special='K'
+        elif karta.value == 'A':
+            if len(cards)>1:
+                special = cards[1].suit 
+            
+        return karta, special
 
 
 
