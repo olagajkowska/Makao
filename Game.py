@@ -40,12 +40,12 @@ class Game:
         wait=0
         while not any(len(hand.content) == 0 for hand in self.__player):
             k+=1
-            print("* * * * * Round: " + str(k) + " * * * * *\n")
+            print("* * * * * Round: ", k, " * * * * *\n")
             print('Stack:\n', self.__stack, '\n')   
             winner, wait = self.__round(draw, wait)
 
         print("End of the game")
-        print("Player " + str((winner-1)%4+1) + " wins in " + str(k) + " turns!\n")
+        print("Player ",(winner-1)%4+1, " wins in ", k, " turns!\n")
 
     def __start(self):
         for i in range(5):
@@ -67,7 +67,7 @@ class Game:
         for count, hand in enumerate(self.__player):
             if win == 1:
                 return count, wait
-            print("* * * Player " + str(count + 1)+" * * *")
+            print("* * * Player ", count+1, " * * *")
             if wait == 1:
                 wait = 0
                 print("Turn skipped!\n")
@@ -94,7 +94,7 @@ class Game:
             hand.play_card(to_play, self.__stack)
             self.__activate(to_play)  
             if len(hand.content)==1:
-                print("Player " + str(count+1) + " says: MACAU!")            
+                print("Player ", count+1, " says: MACAU!")            
             elif len(hand.content)==0:
                 win=1
             else:
