@@ -27,20 +27,23 @@ class Effect:
             pass
 
     @staticmethod
-    def efekt(special, draw, wait):
+    def efekt(special, draw, wait, card):
         if special == 2:
             draw = draw + 2
         elif special == 3:
             draw = draw + 3
         elif special == 4:
             wait = 1
-        elif special in range(5,10):
-            pass
+        elif special in ['5', '6', '7', '8', '9', '10']:
+            print("Requested: ", special, "\n")
+            card.set_value(['J', special])
+            card.set_suit('-')
         elif special == 'K':
             draw = draw + 5
         elif special in ['♣', '♦', '♥', '♠']:
-            pass
-        return draw, wait
+            print("Change color to: ", special)
+            card.set_suit(special)
+        return draw, wait, card
 
 
 

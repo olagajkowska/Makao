@@ -28,7 +28,7 @@ class Card:
         self.__id = -1
 
     def __str__(self):
-        s = self.__value + " " + self.__suit
+        s = str(self.__value) + " " + str(self.__suit)
         # if debug:
         #     s += "\t Card ID = " + str(self.__id)
         return s
@@ -52,4 +52,8 @@ class Card:
     @property
     def suit(self):
         return self.__suit
+
+    def set_value(self, value): self.__value = value
+
+    def set_suit(self, suit): self.__suit = suit
 

@@ -71,7 +71,7 @@ class sameValue(Rules):
         super().__init__()
 
     def __call__(self, top_card, my_card, effect):
-        if my_card.value == top_card.value:
+        if my_card.value in top_card.value:
             return True
         return False
 

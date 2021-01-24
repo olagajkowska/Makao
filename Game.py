@@ -89,16 +89,15 @@ class Game:
                  draw=0
                  continue
 
-            to_play, special = hand.strategy(ok_cards)
-            draw, wait = Effect.efekt(special, draw, wait)
-            hand.play_card(to_play, self.__stack)
-            self.__activate(to_play)  
+            to_play, special = hand.strategy(ok_cards, hand.content)
+            self.__activate(to_play)
+            hand.play_card(to_play, self.__stack)  
+            draw, wait, self.__active= Effect.efekt(special, draw, wait, self.__active)
             if len(hand.content)==1:
-                print("Player ", count+1, " says: MACAU!")            
+                print("Player ", count+1, " says: MACAU!\n")            
             elif len(hand.content)==0:
                 win=1
-            else:
-                hand.renumber(hand.content)
+            hand.renumber(hand.content)
         return count, wait
 
 

@@ -1,4 +1,5 @@
 from Base_container import Base_container
+from collections import Counter
 
 
 class Hand(Base_container):
@@ -36,7 +37,7 @@ class Hand(Base_container):
         deck.remove(card.id)
         self.add(card)
 
-    def strategy(self, cards):
+    def strategy(self, cards, hand):
         karta = cards[0]
 
         special=0
@@ -47,13 +48,32 @@ class Hand(Base_container):
         elif karta.value == '4':
             special=4
         elif karta.value == 'J':
-            special=8
+            if len(hand)>1:
+                val_list=[]
+                n=0
+                for item in hand:
+                    val_list.append(item.value)
+                z=Counter(val_list)
+                for val in ['5', '6', '7', '8', '9', '10']:
+                    if z[val] > n:
+                        special = val
+                        n = z[val]
+                if special == 0:
+                    print("No requests!\n")
         elif karta.value == 'K':
             if cards[0].suit in ["♥", "♠"]:
                 special='K'
         elif karta.value == 'A':
-            if len(cards)>1:
-                special = cards[1].suit 
+            if len(hand)>1:
+                suit_list=[]
+                n=0
+                for item in hand:
+                    suit_list.append(item.suit)
+                z=Counter(suit_list)
+                for suit in ['♣', '♦', '♥', '♠']:
+                    if z[suit] > n:
+                        special = suit
+                        n = z[suit]
             
         return karta, special
 
