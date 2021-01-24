@@ -49,7 +49,7 @@ class Game:
 
 
         print("End of the game")
-        print("Player " + str((winner-1)%4+1) + " wins!\n")
+        print("Player " + str((winner-1)%4+1) + " wins in " + str(k) + " turns!\n")
 
     def __start(self):
         for i in range(5):
