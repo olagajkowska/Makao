@@ -43,10 +43,6 @@ class Game:
             print("* * * * * Round: " + str(k) + " * * * * *\n")
             print('Stack:\n', self.__stack, '\n')   
             winner, wait = self.__round(draw, wait)
-            if self.__empty_deck:
-                print("dealing aditional deck of cards!")
-                self.__deck = Deck(N_Decks)
-
 
         print("End of the game")
         print("Player " + str((winner-1)%4+1) + " wins in " + str(k) + " turns!\n")
@@ -79,25 +75,19 @@ class Game:
             print(self.__player[count])
             ok_cards = self.__rulebook.check(hand.content, self.__active, [], draw)
             if len(ok_cards) == 0:
-                if len(self.__deck.content) == 0:
-
-                    print("Deck is empty!")
-                    self.__restock()
-                    if len(self.__deck.content) == 0:
-                        self.__empty_deck = True
-                    draw=max(draw, 1)
-                    print('card: Draw ' + str(draw) + '\n')                    
-                    for i in range(draw):
-                        hand.draw(self.__deck)
-                    draw=0
-                    continue
-                else:
-                    draw=max(draw, 1)
-                    print('card: Draw ' + str(draw) + '\n')                    
-                    for i in range(draw):
-                        hand.draw(self.__deck)
-                    draw=0
-                    continue
+                 draw=max(draw, 1)
+                 print('card: Draw ' + str(draw) + '\n')                    
+                 for i in range(draw):
+                     if len(self.__deck.content) == 0:
+                         if len(self.__stack.content) <5:
+                            print("Too few cards! Dealing aditional deck of cards!")
+                            self.__deck = Deck(1) 
+                         else: 
+                            print("Deck is empty!")
+                            self.__restock()
+                     hand.draw(self.__deck)
+                 draw=0
+                 continue
 
             to_play, special = hand.strategy(ok_cards)
             draw, wait = Effect.efekt(special, draw, wait)
