@@ -11,7 +11,7 @@ debug = True
 class Game:
     __slots__ = ['__deck', '__stack', '__player', '__rulebook', '__empty_deck', '__active']
 
-    def __init__(self, N_Players=4, N_Decks=1):
+    def __init__(self, N_Players=8, N_Decks=1):
         self.__deck = Deck(N_Decks)
         self.__stack = Stack()
         self.__player = []
@@ -92,8 +92,10 @@ class Game:
             to_play, special = hand.strategy(ok_cards)
             draw, wait = Effect.efekt(special, draw, wait)
             hand.play_card(to_play, self.__stack)
-            self.__activate(to_play)            
-            if len(hand.content)==0:
+            self.__activate(to_play)  
+            if len(hand.content)==1:
+                print("Player " + str(count+1) + " says: MACAU!")            
+            elif len(hand.content)==0:
                 win=1
             else:
                 hand.renumber(hand.content)
