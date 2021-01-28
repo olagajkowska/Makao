@@ -45,7 +45,7 @@ class Game:
             winner, wait = self.__round(draw, wait)
 
         print("End of the game")
-        print("Player ",(winner-1)%4+1, " wins in ", k, " turns!\n")
+        print("Player ",(winner)%N_Players+1, " wins in ", k, " turns!\n")
 
     def __start(self):
         for i in range(5):
@@ -66,7 +66,7 @@ class Game:
         win=0
         for count, hand in enumerate(self.__player):
             if win == 1:
-                return count, wait
+                return count-1, wait
             print("* * * Player ", count+1, " * * *")
             if wait == 1:
                 wait = 0
