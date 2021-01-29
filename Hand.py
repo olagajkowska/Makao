@@ -44,7 +44,7 @@ class Hand(Base_container):
             for item in hand:
                 if item.value == karty[0].value and item.id != karty[0].id:
                     karty.append(item)
-        karty.reverse()
+        #karty.reverse()
         special = []
 
         for item in karty:

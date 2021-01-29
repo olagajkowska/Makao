@@ -98,7 +98,7 @@ class Game:
                     print("Player ", count+1, " says: MACAU!\n")  
                 elif len(hand.content)==0:
                     win=1
-            hand.renumber(hand.content)
+                hand.renumber(hand.content)
         return count, wait
 
 
