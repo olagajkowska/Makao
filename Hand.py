@@ -38,44 +38,54 @@ class Hand(Base_container):
         self.add(card)
 
     def strategy(self, cards, hand):
-        karta = cards[0]
+        karty = []
+        karty.append(cards[0])
+        if len(cards)>1:
+            for item in hand:
+                if item.value == karty[0].value and item.id != karty[0].id:
+                    karty.append(item)
+        karty.reverse()
+        special = []
 
-        special=0
-        if karta.value == '2':
-            special=2
-        elif karta.value == '3':
-            special=3
-        elif karta.value == '4':
-            special=4
-        elif karta.value == 'J':
-            if len(hand)>1:
-                val_list=[]
-                n=0
-                for item in hand:
-                    val_list.append(item.value)
-                z=Counter(val_list)
-                for val in ['5', '6', '7', '8', '9', '10']:
-                    if z[val] > n:
-                        special = val
-                        n = z[val]
-                if special == 0:
-                    print("No requests!\n")
-        elif karta.value == 'K':
-            if cards[0].suit in ["♥", "♠"]:
-                special='K'
-        elif karta.value == 'A':
-            if len(hand)>1:
-                suit_list=[]
-                n=0
-                for item in hand:
-                    suit_list.append(item.suit)
-                z=Counter(suit_list)
-                for suit in ['♣', '♦', '♥', '♠']:
-                    if z[suit] > n:
-                        special = suit
-                        n = z[suit]
+        for item in karty:
+            special.append(0)
+
+        for k, item in enumerate(karty):
+            if item.value == '2':
+                special[k]=2
+            elif item.value == '3':
+                special[k]=3
+            elif item.value == '4':
+                special[k]=4
+            elif item.value == 'J':
+                if len(hand)>1:
+                    val_list=[]
+                    n=0
+                    for item in hand:
+                        val_list.append(item.value)
+                    z=Counter(val_list)
+                    for val in ['5', '6', '7', '8', '9', '10']:
+                        if z[val] > n:
+                            special[k] = val
+                            n = z[val]
+                    if special[k] == 0:
+                        print("No requests!\n")
+            elif item.value == 'K':
+                if cards[0].suit in ["♥", "♠"]:
+                    special[k]='K'
+            elif item.value == 'A':
+                if len(hand)>1:
+                    suit_list=[]
+                    n=0
+                    for item in hand:
+                        suit_list.append(item.suit)
+                    z=Counter(suit_list)
+                    for suit in ['♣', '♦', '♥', '♠']:
+                        if z[suit] > n:
+                            special[k] = suit
+                            n = z[suit]
             
-        return karta, special
+        return karty, special
 
 
 

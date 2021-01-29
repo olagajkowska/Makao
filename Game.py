@@ -90,13 +90,14 @@ class Game:
                  continue
 
             to_play, special = hand.strategy(ok_cards, hand.content)
-            self.__activate(to_play)
-            hand.play_card(to_play, self.__stack)  
-            draw, wait, self.__active= Effect.efekt(special, draw, wait, self.__active)
-            if len(hand.content)==1:
-                print("Player ", count+1, " says: MACAU!\n")            
-            elif len(hand.content)==0:
-                win=1
+            for k, karta in enumerate(to_play):
+                self.__activate(karta)
+                hand.play_card(karta, self.__stack)  
+                draw, wait, self.__active= Effect.efekt(special[k], draw, wait, self.__active)
+                if len(hand.content)==1:
+                    print("Player ", count+1, " says: MACAU!\n")  
+                elif len(hand.content)==0:
+                    win=1
             hand.renumber(hand.content)
         return count, wait
 
