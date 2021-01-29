@@ -39,12 +39,10 @@ class Hand(Base_container):
 
     def strategy(self, cards, hand):
         karty = []
-        karty.append(cards[0])
-        if len(cards)>1:
-            for item in hand:
-                if item.value == karty[0].value and item.id != karty[0].id:
-                    karty.append(item)
-        #karty.reverse()
+        karty.append(cards[0])  #wybranie pierwszej dobrej karty
+        for item in hand:   #czy inne karty pasuja
+            if item.value == karty[0].value and item.id != karty[0].id:
+                karty.append(item)
         special = []
 
         for item in karty:
