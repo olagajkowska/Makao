@@ -11,11 +11,11 @@ debug = True
 class Game:
     __slots__ = ['__deck', '__stack', '__player', '__rulebook', '__empty_deck', '__active', '__N_Players']
 
-    def __init__(self, N_Players=8, N_Decks=1):
+    def __init__(self, N_Players=3, N_Decks=1):
         self.__deck = Deck(N_Decks)
         self.__stack = Stack()
         self.__player = []
-        self.__rulebook = Rulebook()
+        self.__rulebook = Rulebook(N_Players)
         self.__empty_deck = False
         self.__active = Card('8', '-')
         self.__N_Players = N_Players
@@ -52,7 +52,7 @@ class Game:
                 print("Turn skipped!\n")
                 continue
             print(self.__player[count])
-            ok_cards = self.__rulebook.check(hand.content, self.__active, [], draw)
+            ok_cards = self.__rulebook.check(hand.content, self.__active, draw)
             if len(ok_cards) == 0:
                 draw = max(draw, 1)
                 print('card: Draw ' + str(draw) + '\n')
@@ -118,4 +118,3 @@ class Game:
 
         print("End of the game")
         print("Player ", (winner) % self.__N_Players + 1, " wins in ", k, " turns!\n")
-
