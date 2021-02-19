@@ -1,36 +1,44 @@
+import copy
+from Card import Card
+
 class Rulebook:
 
-    def __init__(self):
-        self.__rules = [Queen(), Ace(), Jack(), sameSuit(), sameValue()]
+    def __init__(self, N_players):
+        self.__rules = [Jack(), Ace(), Queen(), sameSuit(), sameValue()]
+        self.__num_players = N_players
+        self.__count = N_players
 
-    def check(self, player_cards, top_card, effect, draw):
+    def check(self, player_cards, top_card, draw):
         ok_cards = []
-        temp_cards = []
+        if isinstance(top_card.value, list):
+            Rules.isThere = "J"
+            Jack.tempCard = copy.deepcopy(top_card)
+            top_card.set_value("J")
+            self.__count = self.__num_players
+            self.__count -= 1
+        elif self.__count < self.__num_players and self.__count > 1:
+            self.__count -= 1
+            Rules.isThere = "J"
+        elif self.__count == 1:
+            Rules.isThere = "J"
+            self.__count = self.__num_players
 
-
-        if draw != 0:
-            for my_card in player_cards:
-                if my_card.value in ['2', '3']:
-                    temp_cards.append(my_card)
-                elif my_card.value == 'K':
-                    if my_card.suit in ["♥", "♠"]:
-                        temp_cards.append(my_card)
-        else:
-            temp_cards = player_cards
-
-
-
-        for my_card in temp_cards:
+        for my_card in player_cards:
             for rule in self.__rules:
-                if rule(top_card, my_card, effect):
+                if rule(top_card, my_card, draw):
                     ok_cards.append(my_card)
                     break
                 elif rule.isThere == "J" or rule.isThere == "A":
-                    rule.isThere = None
+                    if rule.isThere == "A":
+                        rule.isThere = None
                     break
 
-        return ok_cards
+        if Rules.isThere == "J":
+            Rules.isThere = None
+        elif isinstance(top_card.suit, list):
+            top_card.set_suit(top_card.suit[0])
 
+        return ok_cards
 
 
 class Rules:
@@ -38,7 +46,7 @@ class Rules:
     def __init__(self):
         self.__isThere = None
 
-    def __call__(self, top_card, ok_cards, effect):
+    def __call__(self, top_card, ok_cards, draw):
         raise NotImplemented("to be implemented in by a derived class")
 
     @property
@@ -52,15 +60,15 @@ class sameSuit(Rules):
     def __init__(self):
         super().__init__()
 
-    def __call__(self, top_card, my_card, effect):
-        if len(effect) > 0 and top_card.value != 4:
+    def __call__(self, top_card, my_card, draw):
+        if draw != 0:
             if my_card.value == "2" or my_card.value == "3":
                 if my_card.suit == top_card.suit:
                     return True
             elif top_card.suit == "♠" or top_card.suit == "♥":
                 if my_card.suit == top_card.suit and my_card.value == "K":
                     return True
-        elif len(effect) == 0:
+        else:
             if my_card.suit == top_card.suit:
                 return True
         return False
@@ -70,7 +78,7 @@ class sameValue(Rules):
     def __init__(self):
         super().__init__()
 
-    def __call__(self, top_card, my_card, effect):
+    def __call__(self, top_card, my_card, draw):
         if my_card.value in top_card.value:
             return True
         return False
@@ -80,40 +88,38 @@ class Queen(Rules):
     def __init__(self):
         super().__init__()
 
-    def __call__(self, top_card, my_card, effect):
-        if (top_card.value == "Q" or my_card.value == "Q") and len(effect) == 0:
-            return True
+    def __call__(self, top_card, my_card, draw):
+        if draw == 0:
+            if (top_card.value == "Q" or my_card.value == "Q"):
+                return True
         return False
 
 class Ace(Rules):
     def __init__(self):
         super().__init__()
 
-    def __call__(self, top_card, my_card, effect):
-        if top_card.value == "A":
-            self.isThere = "A"
-            if len(effect)>0:
-                if my_card.suit == effect[len(effect) - 1]:
-                    return True
-            elif my_card.value == "A":
+    def __call__(self, top_card, my_card, draw):
+        if isinstance(top_card.suit, list):
+            self.isThere == "A"
+            if my_card.suit == top_card.suit[1] or my_card.value == "A":
                 return True
         return False
 
 class Jack(Rules):
     def __init__(self):
         super().__init__()
+        self.__tempCard = Card("8","-")
 
-    def __call__(self, top_card, my_card, effect):
-        if top_card.value == "J":
-            self.isThere = "J"
-            if len(effect)>0:
-                if my_card.value == effect[len(effect) - 1]:
-                    return True
-            elif my_card.value == "J":
+    def __call__(self, top_card, my_card, draw):
+        if self.isThere == "J":
+            if my_card.value == self.tempCard.value[1]:
                 return True
-        elif len(effect) > 0:
-            if isinstance(effect[len(effect) - 1], str):
-                self.isThere = "J"
-                if my_card.value == effect[len(effect) - 1]:
-                    return True
+            elif top_card.value == "J" and my_card.value == "J":
+                return True
         return False
+
+    @property
+    def tempCard(self): return self.__tempCard
+
+    @tempCard.setter
+    def tempCard(self, Card): self.__tempCard = Card
