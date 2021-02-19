@@ -37,12 +37,11 @@ class Effect:
         elif special in ['5', '6', '7', '8', '9', '10']:
             print("Requested cards: ", special, "\n")
             card.set_value(['J', special])
-            card.set_suit('-')
         elif special == 'K':
             draw = draw + 5
         elif special in ['♣', '♦', '♥', '♠']:
             print("Color changed to: ", special, "\n")
-            card.set_suit(special)
+            card.set_suit([card.suit, special])
         return draw, wait, card
 
 
